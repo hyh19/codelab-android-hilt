@@ -46,36 +46,55 @@
    cd android-hilt
    ```
 
-2. 使用 Gradle 构建项目
+2. 设置必要的环境变量
 
    ```bash
-   # 确保使用正确的 JDK 版本
+   # 设置 Android SDK 路径
+   export ANDROID_HOME=$HOME/Library/Android/sdk
+   
+   # 设置 JDK 11 路径
    export JAVA_HOME=$(/usr/libexec/java_home -v 11)
-   
-   # 清理项目
-   ./gradlew clean
-   
-   # 构建项目（可能会出现 lint 错误，但不影响应用运行）
-   ./gradlew build
    ```
 
-3. 启动模拟器
+3. 使用 Gradle 构建项目
 
    ```bash
-   # 列出可用的模拟器
-   ~/Library/Android/sdk/emulator/emulator -list-avds
+   # 清理并构建项目
+   ./gradlew clean build
    
-   # 启动模拟器（将 YOUR_AVD_NAME 替换为实际的模拟器名称）
+   # 注意：构建过程中可能会出现 lint 错误，这些错误主要是代码质量检查，不影响应用运行
+   # 如果需要忽略这些错误，可以在 app/build.gradle 中添加：
+   # android {
+   #     lint {
+   #         baseline = file("lint-baseline.xml")
+   #         checkReleaseBuilds = false
+   #         abortOnError = false
+   #     }
+   # }
+   ```
+
+4. 检查模拟器状态
+
+   ```bash
+   # 列出已连接的设备
+   adb devices
+   
+   # 如果模拟器未运行，启动模拟器
+   ~/Library/Android/sdk/emulator/emulator -list-avds
    ~/Library/Android/sdk/emulator/emulator -avd YOUR_AVD_NAME
    ```
 
-4. 安装并运行应用
+5. 安装应用
 
    ```bash
    # 安装 debug 版本到模拟器
    ./gradlew installDebug
-   
-   # 启动应用
+   ```
+
+6. 启动应用
+
+   ```bash
+   # 启动 MainActivity
    adb shell am start -n com.example.android.hilt/.ui.MainActivity
    ```
 
