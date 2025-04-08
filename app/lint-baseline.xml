@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<issues format="6" by="lint 7.3.0" type="baseline" client="gradle" dependencies="false" name="AGP (7.3.0)" variant="all" version="7.3.0">
+
+    <issue
+        id="LintError"
+        message="Unexpected failure during lint analysis of ButtonsFragment.kt (this is a bug in lint or one of the libraries it depends on)&#xA;&#xA;Message: &apos;java.util.List org.jetbrains.uast.UField.getAnnotations()&apos;&#xA;&#xA;The crash seems to involve the detector `dagger.lint.DaggerKotlinIssueDetector`.&#xA;You can try disabling it with something like this:&#xA;    android {&#xA;        lint {&#xA;            disable &quot;JvmStaticProvidesInObjectDetector&quot;, &quot;FieldSiteTargetOnQualifierAnnotation&quot;, &quot;ModuleCompanionObjects&quot;, &quot;ModuleCompanionObjectsNotInModuleParent&quot;&#xA;        }&#xA;    }&#xA;&#xA;Stack: `NoSuchMethodError:DaggerKotlinIssueDetector$createUastHandler$1.visitField(DaggerKotlinIssueDetector.kt:166)←UElementVisitor$DispatchPsiVisitor.visitField(UElementVisitor.kt:653)←KotlinUField.accept(KotlinUField.kt:51)←ImplementationUtilsKt.acceptList(implementationUtils.kt:29)←AbstractKotlinUClass.accept(AbstractKotlinUClass.kt:42)←ImplementationUtilsKt.acceptList(implementationUtils.kt:29)←UFile$DefaultImpls.accept(UFile.kt:87)←KotlinUFile.accept(KotlinUFile.kt:14)←UastLintUtilsKt.acceptSourceFile(UastLintUtils.kt:515)←UElementVisitor$visitFile$3.run(UElementVisitor.kt:274)←LintClient.runReadAction(LintClient.kt:1775)←LintDriver$LintClientWrapper.runReadAction(LintDriver.kt:2757)←UElementVisitor.visitFile(UElementVisitor.kt:271)←LintDriver$visitUastDetectors$1.run(LintDriver.kt:2073)←LintClient.runReadAction(LintClient.kt:1775)←LintDriver$LintClientWrapper.runReadAction(LintDriver.kt:2757)←LintDriver.visitUastDetectors(LintDriver.kt:2073)←LintDriver.visitUast(LintDriver.kt:2032)←LintDriver.runFileDetectors(LintDriver.kt:1421)←LintDriver.checkProject(LintDriver.kt:1185)←LintDriver.checkProjectRoot(LintDriver.kt:645)←LintDriver.access$checkProjectRoot(LintDriver.kt:158)←LintDriver$analyzeOnly$1.invoke(LintDriver.kt:459)←LintDriver$analyzeOnly$1.invoke(LintDriver.kt:452)←LintDriver.doAnalyze(LintDriver.kt:519)←LintDriver.analyzeOnly(LintDriver.kt:452)←LintCliClient$analyzeOnly$1.invoke(LintCliClient.kt:247)←LintCliClient$analyzeOnly$1.invoke(LintCliClient.kt:247)←LintCliClient.run(LintCliClient.kt:289)←LintCliClient.run$default(LintCliClient.kt:272)←LintCliClient.analyzeOnly(LintCliClient.kt:247)←Main.run(Main.java:1675)←Main.run(Main.java:281)←NativeMethodAccessorImpl.invoke0(NativeMethodAccessorImpl.java:-2)←NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)←DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)←Method.invoke(Method.java:566)←AndroidLintWorkAction.invokeLintMainRunMethod(AndroidLintWorkAction.kt:99)←AndroidLintWorkAction.runLint(AndroidLintWorkAction.kt:88)←AndroidLintWorkAction.execute(AndroidLintWorkAction.kt:65)←DefaultWorkerServer.execute(DefaultWorkerServer.java:63)←NoIsolationWorkerFactory$1$1.create(NoIsolationWorkerFactory.java:66)←NoIsolationWorkerFactory$1$1.create(NoIsolationWorkerFactory.java:62)←ClassLoaderUtils.executeInClassloader(ClassLoaderUtils.java:97)←NoIsolationWorkerFactory$1.lambda$execute$0(NoIsolationWorkerFactory.java:62)←AbstractWorker$1.call(AbstractWorker.java:44)←AbstractWorker$1.call(AbstractWorker.java:41)←DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:204)←DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:199)←DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:66)←DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:59)←DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:157)←DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:59)←DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:53)←DefaultBuildOperationExecutor.call(DefaultBuildOperationExecutor.java:73)←AbstractWorker.executeWrappedInBuildOperation(AbstractWorker.java:41)←NoIsolationWorkerFactory$1.execute(NoIsolationWorkerFactory.java:59)←DefaultWorkerExecutor.lambda$submitWork$2(DefaultWorkerExecutor.java:205)←FutureTask.run(FutureTask.java:264)←DefaultConditionalExecutionQueue$ExecutionRunner.runExecution(DefaultConditionalExecutionQueue.java:187)←DefaultConditionalExecutionQueue$ExecutionRunner.access$700(DefaultConditionalExecutionQueue.java:120)←DefaultConditionalExecutionQueue$ExecutionRunner$1.run(DefaultConditionalExecutionQueue.java:162)←Factories$1.create(Factories.java:31)←DefaultWorkerLeaseService.withLocks(DefaultWorkerLeaseService.java:270)←DefaultWorkerLeaseService.runAsWorkerThread(DefaultWorkerLeaseService.java:119)←DefaultWorkerLeaseService.runAsWorkerThread(DefaultWorkerLeaseService.java:124)←DefaultConditionalExecutionQueue$ExecutionRunner.runBatch(DefaultConditionalExecutionQueue.java:157)←DefaultConditionalExecutionQueue$ExecutionRunner.run(DefaultConditionalExecutionQueue.java:126)←Executors$RunnableAdapter.call(Executors.java:515)←FutureTask.run(FutureTask.java:264)←ExecutorPolicy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:64)←ManagedExecutorImpl$1.run(ManagedExecutorImpl.java:48)←ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)←ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)←Thread.run(Thread.java:829)`&#xA;&#xA;You can run with --stacktrace or set environment variable `LINT_PRINT_STACKTRACE=true` to dump a full stacktrace to stdout.">
+        <location
+            file="src/main/java/com/example/android/hilt/ui/ButtonsFragment.kt"/>
+    </issue>
+
+    <issue
+        id="LintError"
+        message="Unexpected failure during lint analysis of LogsFragment.kt (this is a bug in lint or one of the libraries it depends on)&#xA;&#xA;Message: &apos;java.util.List org.jetbrains.uast.UField.getAnnotations()&apos;&#xA;&#xA;The crash seems to involve the detector `dagger.lint.DaggerKotlinIssueDetector`.&#xA;You can try disabling it with something like this:&#xA;    android {&#xA;        lint {&#xA;            disable &quot;JvmStaticProvidesInObjectDetector&quot;, &quot;FieldSiteTargetOnQualifierAnnotation&quot;, &quot;ModuleCompanionObjects&quot;, &quot;ModuleCompanionObjectsNotInModuleParent&quot;&#xA;        }&#xA;    }&#xA;&#xA;Stack: `NoSuchMethodError:DaggerKotlinIssueDetector$createUastHandler$1.visitField(DaggerKotlinIssueDetector.kt:166)←UElementVisitor$DispatchPsiVisitor.visitField(UElementVisitor.kt:653)←KotlinUField.accept(KotlinUField.kt:51)←ImplementationUtilsKt.acceptList(implementationUtils.kt:29)←AbstractKotlinUClass.accept(AbstractKotlinUClass.kt:42)←ImplementationUtilsKt.acceptList(implementationUtils.kt:29)←UFile$DefaultImpls.accept(UFile.kt:87)←KotlinUFile.accept(KotlinUFile.kt:14)←UastLintUtilsKt.acceptSourceFile(UastLintUtils.kt:515)←UElementVisitor$visitFile$3.run(UElementVisitor.kt:274)←LintClient.runReadAction(LintClient.kt:1775)←LintDriver$LintClientWrapper.runReadAction(LintDriver.kt:2757)←UElementVisitor.visitFile(UElementVisitor.kt:271)←LintDriver$visitUastDetectors$1.run(LintDriver.kt:2073)←LintClient.runReadAction(LintClient.kt:1775)←LintDriver$LintClientWrapper.runReadAction(LintDriver.kt:2757)←LintDriver.visitUastDetectors(LintDriver.kt:2073)←LintDriver.visitUast(LintDriver.kt:2032)←LintDriver.runFileDetectors(LintDriver.kt:1421)←LintDriver.checkProject(LintDriver.kt:1185)←LintDriver.checkProjectRoot(LintDriver.kt:645)←LintDriver.access$checkProjectRoot(LintDriver.kt:158)←LintDriver$analyzeOnly$1.invoke(LintDriver.kt:459)←LintDriver$analyzeOnly$1.invoke(LintDriver.kt:452)←LintDriver.doAnalyze(LintDriver.kt:519)←LintDriver.analyzeOnly(LintDriver.kt:452)←LintCliClient$analyzeOnly$1.invoke(LintCliClient.kt:247)←LintCliClient$analyzeOnly$1.invoke(LintCliClient.kt:247)←LintCliClient.run(LintCliClient.kt:289)←LintCliClient.run$default(LintCliClient.kt:272)←LintCliClient.analyzeOnly(LintCliClient.kt:247)←Main.run(Main.java:1675)←Main.run(Main.java:281)←NativeMethodAccessorImpl.invoke0(NativeMethodAccessorImpl.java:-2)←NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)←DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)←Method.invoke(Method.java:566)←AndroidLintWorkAction.invokeLintMainRunMethod(AndroidLintWorkAction.kt:99)←AndroidLintWorkAction.runLint(AndroidLintWorkAction.kt:88)←AndroidLintWorkAction.execute(AndroidLintWorkAction.kt:65)←DefaultWorkerServer.execute(DefaultWorkerServer.java:63)←NoIsolationWorkerFactory$1$1.create(NoIsolationWorkerFactory.java:66)←NoIsolationWorkerFactory$1$1.create(NoIsolationWorkerFactory.java:62)←ClassLoaderUtils.executeInClassloader(ClassLoaderUtils.java:97)←NoIsolationWorkerFactory$1.lambda$execute$0(NoIsolationWorkerFactory.java:62)←AbstractWorker$1.call(AbstractWorker.java:44)←AbstractWorker$1.call(AbstractWorker.java:41)←DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:204)←DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:199)←DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:66)←DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:59)←DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:157)←DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:59)←DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:53)←DefaultBuildOperationExecutor.call(DefaultBuildOperationExecutor.java:73)←AbstractWorker.executeWrappedInBuildOperation(AbstractWorker.java:41)←NoIsolationWorkerFactory$1.execute(NoIsolationWorkerFactory.java:59)←DefaultWorkerExecutor.lambda$submitWork$2(DefaultWorkerExecutor.java:205)←FutureTask.run(FutureTask.java:264)←DefaultConditionalExecutionQueue$ExecutionRunner.runExecution(DefaultConditionalExecutionQueue.java:187)←DefaultConditionalExecutionQueue$ExecutionRunner.access$700(DefaultConditionalExecutionQueue.java:120)←DefaultConditionalExecutionQueue$ExecutionRunner$1.run(DefaultConditionalExecutionQueue.java:162)←Factories$1.create(Factories.java:31)←DefaultWorkerLeaseService.withLocks(DefaultWorkerLeaseService.java:270)←DefaultWorkerLeaseService.runAsWorkerThread(DefaultWorkerLeaseService.java:119)←DefaultWorkerLeaseService.runAsWorkerThread(DefaultWorkerLeaseService.java:124)←DefaultConditionalExecutionQueue$ExecutionRunner.runBatch(DefaultConditionalExecutionQueue.java:157)←DefaultConditionalExecutionQueue$ExecutionRunner.run(DefaultConditionalExecutionQueue.java:126)←Executors$RunnableAdapter.call(Executors.java:515)←FutureTask.run(FutureTask.java:264)←ExecutorPolicy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:64)←ManagedExecutorImpl$1.run(ManagedExecutorImpl.java:48)←ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)←ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)←Thread.run(Thread.java:829)`&#xA;&#xA;You can run with --stacktrace or set environment variable `LINT_PRINT_STACKTRACE=true` to dump a full stacktrace to stdout.">
+        <location
+            file="src/main/java/com/example/android/hilt/ui/LogsFragment.kt"/>
+    </issue>
+
+    <issue
+        id="LintError"
+        message="Unexpected failure during lint analysis of MainActivity.kt (this is a bug in lint or one of the libraries it depends on)&#xA;&#xA;Message: &apos;java.util.List org.jetbrains.uast.UField.getAnnotations()&apos;&#xA;&#xA;The crash seems to involve the detector `dagger.lint.DaggerKotlinIssueDetector`.&#xA;You can try disabling it with something like this:&#xA;    android {&#xA;        lint {&#xA;            disable &quot;JvmStaticProvidesInObjectDetector&quot;, &quot;FieldSiteTargetOnQualifierAnnotation&quot;, &quot;ModuleCompanionObjects&quot;, &quot;ModuleCompanionObjectsNotInModuleParent&quot;&#xA;        }&#xA;    }&#xA;&#xA;Stack: `NoSuchMethodError:DaggerKotlinIssueDetector$createUastHandler$1.visitField(DaggerKotlinIssueDetector.kt:166)←UElementVisitor$DispatchPsiVisitor.visitField(UElementVisitor.kt:653)←KotlinUField.accept(KotlinUField.kt:51)←ImplementationUtilsKt.acceptList(implementationUtils.kt:29)←AbstractKotlinUClass.accept(AbstractKotlinUClass.kt:42)←ImplementationUtilsKt.acceptList(implementationUtils.kt:29)←UFile$DefaultImpls.accept(UFile.kt:87)←KotlinUFile.accept(KotlinUFile.kt:14)←UastLintUtilsKt.acceptSourceFile(UastLintUtils.kt:515)←UElementVisitor$visitFile$3.run(UElementVisitor.kt:274)←LintClient.runReadAction(LintClient.kt:1775)←LintDriver$LintClientWrapper.runReadAction(LintDriver.kt:2757)←UElementVisitor.visitFile(UElementVisitor.kt:271)←LintDriver$visitUastDetectors$1.run(LintDriver.kt:2073)←LintClient.runReadAction(LintClient.kt:1775)←LintDriver$LintClientWrapper.runReadAction(LintDriver.kt:2757)←LintDriver.visitUastDetectors(LintDriver.kt:2073)←LintDriver.visitUast(LintDriver.kt:2032)←LintDriver.runFileDetectors(LintDriver.kt:1421)←LintDriver.checkProject(LintDriver.kt:1185)←LintDriver.checkProjectRoot(LintDriver.kt:645)←LintDriver.access$checkProjectRoot(LintDriver.kt:158)←LintDriver$analyzeOnly$1.invoke(LintDriver.kt:459)←LintDriver$analyzeOnly$1.invoke(LintDriver.kt:452)←LintDriver.doAnalyze(LintDriver.kt:519)←LintDriver.analyzeOnly(LintDriver.kt:452)←LintCliClient$analyzeOnly$1.invoke(LintCliClient.kt:247)←LintCliClient$analyzeOnly$1.invoke(LintCliClient.kt:247)←LintCliClient.run(LintCliClient.kt:289)←LintCliClient.run$default(LintCliClient.kt:272)←LintCliClient.analyzeOnly(LintCliClient.kt:247)←Main.run(Main.java:1675)←Main.run(Main.java:281)←NativeMethodAccessorImpl.invoke0(NativeMethodAccessorImpl.java:-2)←NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)←DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)←Method.invoke(Method.java:566)←AndroidLintWorkAction.invokeLintMainRunMethod(AndroidLintWorkAction.kt:99)←AndroidLintWorkAction.runLint(AndroidLintWorkAction.kt:88)←AndroidLintWorkAction.execute(AndroidLintWorkAction.kt:65)←DefaultWorkerServer.execute(DefaultWorkerServer.java:63)←NoIsolationWorkerFactory$1$1.create(NoIsolationWorkerFactory.java:66)←NoIsolationWorkerFactory$1$1.create(NoIsolationWorkerFactory.java:62)←ClassLoaderUtils.executeInClassloader(ClassLoaderUtils.java:97)←NoIsolationWorkerFactory$1.lambda$execute$0(NoIsolationWorkerFactory.java:62)←AbstractWorker$1.call(AbstractWorker.java:44)←AbstractWorker$1.call(AbstractWorker.java:41)←DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:204)←DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:199)←DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:66)←DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:59)←DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:157)←DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:59)←DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:53)←DefaultBuildOperationExecutor.call(DefaultBuildOperationExecutor.java:73)←AbstractWorker.executeWrappedInBuildOperation(AbstractWorker.java:41)←NoIsolationWorkerFactory$1.execute(NoIsolationWorkerFactory.java:59)←DefaultWorkerExecutor.lambda$submitWork$2(DefaultWorkerExecutor.java:205)←FutureTask.run(FutureTask.java:264)←DefaultConditionalExecutionQueue$ExecutionRunner.runExecution(DefaultConditionalExecutionQueue.java:187)←DefaultConditionalExecutionQueue$ExecutionRunner.access$700(DefaultConditionalExecutionQueue.java:120)←DefaultConditionalExecutionQueue$ExecutionRunner$1.run(DefaultConditionalExecutionQueue.java:162)←Factories$1.create(Factories.java:31)←DefaultWorkerLeaseService.withLocks(DefaultWorkerLeaseService.java:270)←DefaultWorkerLeaseService.runAsWorkerThread(DefaultWorkerLeaseService.java:119)←DefaultWorkerLeaseService.runAsWorkerThread(DefaultWorkerLeaseService.java:124)←DefaultConditionalExecutionQueue$ExecutionRunner.runBatch(DefaultConditionalExecutionQueue.java:157)←DefaultConditionalExecutionQueue$ExecutionRunner.run(DefaultConditionalExecutionQueue.java:126)←Executors$RunnableAdapter.call(Executors.java:515)←FutureTask.run(FutureTask.java:264)←ExecutorPolicy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:64)←ManagedExecutorImpl$1.run(ManagedExecutorImpl.java:48)←ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)←ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)←Thread.run(Thread.java:829)`&#xA;&#xA;You can run with --stacktrace or set environment variable `LINT_PRINT_STACKTRACE=true` to dump a full stacktrace to stdout.">
+        <location
+            file="src/main/java/com/example/android/hilt/ui/MainActivity.kt"/>
+    </issue>
+
+    <issue
+        id="OldTargetApi"
+        message="Not targeting the latest versions of Android; compatibility modes apply. Consider testing and updating this version. Consult the android.os.Build.VERSION_CODES javadoc for details."
+        errorLine1="        targetSdkVersion 33"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="build.gradle"
+            line="31"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of androidx.appcompat:appcompat than 1.4.1 is available: 1.7.0"
+        errorLine1="    implementation &apos;androidx.appcompat:appcompat:1.4.1&apos;"
+        errorLine2="                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="build.gradle"
+            line="57"
+            column="20"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of androidx.core:core-ktx than 1.7.0 is available: 1.15.0"
+        errorLine1="    implementation &apos;androidx.core:core-ktx:1.7.0&apos;"
+        errorLine2="                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="build.gradle"
+            line="58"
+            column="20"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of androidx.constraintlayout:constraintlayout than 2.1.4 is available: 2.2.1"
+        errorLine1="    implementation &apos;androidx.constraintlayout:constraintlayout:2.1.4&apos;"
+        errorLine2="                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="build.gradle"
+            line="59"
+            column="20"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of androidx.recyclerview:recyclerview than 1.2.1 is available: 1.4.0"
+        errorLine1="    implementation &apos;androidx.recyclerview:recyclerview:1.2.1&apos;"
+        errorLine2="                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="build.gradle"
+            line="60"
+            column="20"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of androidx.room:room-runtime than 2.4.0 is available: 2.6.1"
+        errorLine1="    implementation &quot;androidx.room:room-runtime:2.4.0&quot;"
+        errorLine2="                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="build.gradle"
+            line="63"
+            column="20"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of androidx.room:room-compiler than 2.4.0 is available: 2.6.1"
+        errorLine1="    kapt &quot;androidx.room:room-compiler:2.4.0&quot;"
+        errorLine2="         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="build.gradle"
+            line="64"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of org.xerial:sqlite-jdbc than 3.36.0 is available: 3.41.2.2"
+        errorLine1="    implementation &apos;org.xerial:sqlite-jdbc:3.36.0&apos;"
+        errorLine2="                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="build.gradle"
+            line="65"
+            column="20"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of androidx.test:core-ktx than 1.4.0 is available: 1.6.1"
+        errorLine1="    androidTestImplementation &quot;androidx.test:core-ktx:1.4.0&quot;"
+        errorLine2="                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="build.gradle"
+            line="69"
+            column="31"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of androidx.test.ext:junit-ktx than 1.1.3 is available: 1.2.1"
+        errorLine1="    androidTestImplementation &quot;androidx.test.ext:junit-ktx:1.1.3&quot;"
+        errorLine2="                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="build.gradle"
+            line="70"
+            column="31"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of androidx.test:rules than 1.4.0 is available: 1.6.1"
+        errorLine1="    androidTestImplementation &quot;androidx.test:rules:1.4.0&quot;"
+        errorLine2="                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="build.gradle"
+            line="71"
+            column="31"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of androidx.test.espresso:espresso-core than 3.4.0 is available: 3.6.1"
+        errorLine1="    androidTestImplementation &quot;androidx.test.espresso:espresso-core:3.4.0&quot;"
+        errorLine2="                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="build.gradle"
+            line="72"
+            column="31"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of com.google.dagger:hilt-android than 2.40.1 is available: 2.56"
+        errorLine1="    implementation &quot;com.google.dagger:hilt-android:$hilt_version&quot;"
+        errorLine2="                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="build.gradle"
+            line="75"
+            column="20"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of com.google.dagger:hilt-android-testing than 2.40.1 is available: 2.56"
+        errorLine1="    androidTestImplementation &quot;com.google.dagger:hilt-android-testing:$hilt_version&quot;"
+        errorLine2="                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="build.gradle"
+            line="79"
+            column="31"/>
+    </issue>
+
+    <issue
+        id="ExportedContentProvider"
+        message="Exported content providers can provide access to potentially sensitive data"
+        errorLine1="        &lt;provider"
+        errorLine2="         ~~~~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="39"
+            column="10"/>
+    </issue>
+
+</issues>

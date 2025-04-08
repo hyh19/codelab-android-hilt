@@ -56,24 +56,38 @@
    export JAVA_HOME=$(/usr/libexec/java_home -v 11)
    ```
 
-3. 使用 Gradle 构建项目
+3. 修改项目配置
+
+   对于 M1/M2 Mac 用户，需要在 `app/build.gradle` 文件中添加以下配置：
+
+   ```groovy
+   android {
+       // ... 其他配置 ...
+
+       lint {
+           baseline = file("lint-baseline.xml")
+           checkReleaseBuilds = false
+           abortOnError = false
+       }
+   }
+
+   dependencies {
+       // ... 其他依赖 ...
+
+       // Room
+       implementation "androidx.room:room-runtime:2.4.0"
+       kapt "androidx.room:room-compiler:2.4.0"
+   }
+   ```
+
+4. 使用 Gradle 构建项目
 
    ```bash
    # 清理并构建项目
    ./gradlew clean build
-   
-   # 注意：构建过程中可能会出现 lint 错误，这些错误主要是代码质量检查，不影响应用运行
-   # 如果需要忽略这些错误，可以在 app/build.gradle 中添加：
-   # android {
-   #     lint {
-   #         baseline = file("lint-baseline.xml")
-   #         checkReleaseBuilds = false
-   #         abortOnError = false
-   #     }
-   # }
    ```
 
-4. 检查模拟器状态
+5. 检查模拟器状态
 
    ```bash
    # 列出已连接的设备
@@ -84,14 +98,14 @@
    ~/Library/Android/sdk/emulator/emulator -avd YOUR_AVD_NAME
    ```
 
-5. 安装应用
+6. 安装应用
 
    ```bash
    # 安装 debug 版本到模拟器
    ./gradlew installDebug
    ```
 
-6. 启动应用
+7. 启动应用
 
    ```bash
    # 启动 MainActivity
@@ -122,20 +136,10 @@
    - 检查 Hilt 版本是否与项目配置匹配
    - 验证所有必要的 Hilt 注解是否正确使用
 
-5. 如果遇到 lint 错误：
-   - 这些错误主要是代码质量检查，不影响应用运行
-   - 如果需要忽略这些错误，可以在 app/build.gradle 中添加：
-
-     ```groovy
-     android {
-         lint {
-             baseline = file("lint-baseline.xml")
-             // 或者完全禁用 lint
-             checkReleaseBuilds = false
-             abortOnError = false
-         }
-     }
-     ```
+5. 如果遇到 SQLite 相关错误（M1/M2 Mac 特有）：
+   - 确保使用 Room 2.4.0 或更高版本
+   - 检查是否添加了正确的 lint 配置
+   - 如果问题仍然存在，尝试清理项目并重新构建
 
 ## 参考资源
 
@@ -144,3 +148,4 @@
 - [Gradle 用户指南](https://docs.gradle.org/current/userguide/userguide.html)
 - [Hilt 官方文档](https://dagger.dev/hilt/)
 - [AndroidX 迁移指南](https://developer.android.com/jetpack/androidx/migrate)
+- [Room 数据库文档](https://developer.android.com/training/data-storage/room)

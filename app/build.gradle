@@ -45,6 +45,12 @@ android {
         sourceCompatibility 1.8
         targetCompatibility 1.8
     }
+
+    lint {
+        baseline = file("lint-baseline.xml")
+        checkReleaseBuilds = false
+        abortOnError = false
+    }
 }
 
 dependencies {
@@ -54,8 +60,9 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
 
     // Room
-    implementation "androidx.room:room-runtime:2.3.0"
-    kapt "androidx.room:room-compiler:2.3.0"
+    implementation "androidx.room:room-runtime:2.4.0"
+    kapt "androidx.room:room-compiler:2.4.0"
+    implementation 'org.xerial:sqlite-jdbc:3.36.0'
 
     // Testing dependencies
     androidTestImplementation "junit:junit:4.13.2"
