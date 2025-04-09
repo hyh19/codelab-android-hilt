@@ -26,7 +26,7 @@ classDiagram
         +boolean documented = true
         +boolean inherited = false
     }
-    note for AndroidEntryPoint "保留策略: CLASS\n目标元素: TYPE(类)"
+    note for AndroidEntryPoint "保留策略: CLASS<br>目标元素: TYPE(类)"
 ```
 
 ### 注解工作原理
@@ -157,10 +157,10 @@ class DataSyncService : Service() {
 
 ```mermaid
 flowchart LR
-    A["@HiltAndroidApp\nApplication"] --> B["@AndroidEntryPoint\nActivity"]
-    B --> C["@AndroidEntryPoint\nFragment"]
-    B --> D["@AndroidEntryPoint\nService"]
-    C --> E["@HiltViewModel\nViewModel"]
+    A["@HiltAndroidApp<br>Application"] --> B["@AndroidEntryPoint<br>Activity"]
+    B --> C["@AndroidEntryPoint<br>Fragment"]
+    B --> D["@AndroidEntryPoint<br>Service"]
+    C --> E["@HiltViewModel<br>ViewModel"]
     
     subgraph "依赖提供"
     F["@Module + @InstallIn"]
@@ -276,23 +276,24 @@ public final class LogsFragment extends Hilt_LogsFragment {
 
 ### 伪代码说明
 
-以下是 `@AndroidEntryPoint` 注解背后的工作原理伪代码：
-
-```
-编译时过程:
-1. 扫描标记了 @AndroidEntryPoint 的类
-2. 为每个类生成带有 Hilt_ 前缀的基类
-3. 在基类中添加依赖注入逻辑
-4. 修改原始类，使其继承生成的基类
-5. 生成用于注入的组件接口和实现
-
-运行时过程:
-1. 创建 Android 组件实例（实际是继承了 Hilt_ 基类的子类）
-2. 基类的生命周期方法（如 onAttach）被调用
-3. 基类初始化组件上下文并调用 inject() 方法
-4. inject() 方法获取 Hilt 生成的组件实例
-5. 组件实例执行依赖注入（setter 注入或字段注入）
-6. 组件正常执行其余生命周期
+```mermaid
+flowchart TB
+    subgraph "编译时过程"
+        A1["扫描标记了 @AndroidEntryPoint 的类"] --> A2["为每个类生成 Hilt_ 前缀的基类"]
+        A2 --> A3["在基类中添加依赖注入逻辑"]
+        A3 --> A4["修改原始类，使其继承生成的基类"]
+        A4 --> A5["生成用于注入的组件接口和实现"]
+    end
+    
+    subgraph "运行时过程"
+        B1["创建 Android 组件实例<br>(继承了 Hilt_ 基类的子类)"] --> B2["基类的生命周期方法被调用<br>(如 onAttach、onCreate)"]
+        B2 --> B3["基类初始化组件上下文<br>并调用 inject() 方法"]
+        B3 --> B4["inject() 方法获取<br>Hilt 生成的组件实例"]
+        B4 --> B5["组件实例执行依赖注入<br>(setter 注入或字段注入)"]
+        B5 --> B6["组件正常执行其余生命周期"]
+    end
+    
+    A5 -.-> |"编译完成后"| B1
 ```
 
 ### 运行时行为
