@@ -49,18 +49,18 @@ alwaysApply: false
 - **目标元素**：详细解释 ElementType（如 TYPE、FIELD、METHOD）及其在该注解中的应用
 - **继承特性**：说明该注解是否可被继承（`@Inherited`）
 
-```mermaid
-classDiagram
-    class AnnotationName {
-        +RetentionPolicy retention
-        +ElementType[] target
-        +boolean documented
-        +boolean inherited
-        +attribute1: Type
-        +attribute2: Type [default value]
-    }
-    note for AnnotationName "保留策略: SOURCE/CLASS/RUNTIME\n目标元素: TYPE/FIELD/METHOD/etc."
-```
+    ```mermaid
+    classDiagram
+        class AnnotationName {
+            +RetentionPolicy retention
+            +ElementType[] target
+            +boolean documented
+            +boolean inherited
+            +attribute1: Type
+            +attribute2: Type [default value]
+        }
+        note for AnnotationName "保留策略: SOURCE/CLASS/RUNTIME<br>目标元素: TYPE/FIELD/METHOD/etc."
+    ```
 
 #### 注解工作原理
 
@@ -71,17 +71,17 @@ classDiagram
 - **反射使用**：如适用，详细解释注解如何通过反射在运行时被使用
 - **工作流程图**：使用 Mermaid 语法绘制注解处理流程图
 
-```mermaid
-flowchart TD
-    A["注解声明"] --> B["注解处理器注册"]
-    B --> C{"处理时机"}
-    C -->|"编译期"| D["APT处理"]
-    C -->|"运行期"| E["反射处理"]
-    D --> F["生成代码"]
-    E --> G["动态行为"]
-    F --> H["编译生成类文件"]
-    G --> I["运行时行为改变"]
-```
+    ```mermaid
+    flowchart TD
+        A["注解声明"] --> B["注解处理器注册"]
+        B --> C{"处理时机"}
+        C -->|"编译期"| D["APT处理"]
+        C -->|"运行期"| E["反射处理"]
+        D --> F["生成代码"]
+        E --> G["动态行为"]
+        F --> H["编译生成类文件"]
+        G --> I["运行时行为改变"]
+    ```
 
 ### 注解使用方式
 
@@ -96,22 +96,36 @@ flowchart TD
 
 - **编译前代码**：展示使用注解前的原始代码
 - **编译后效果**：展示注解处理后生成的代码或产生的效果
-- **伪代码说明**：使用伪代码详细解释注解背后实际执行的逻辑
+- **执行逻辑图解**：使用 Mermaid 语法图表详细解释注解背后实际执行的逻辑
+
+    ```mermaid
+    flowchart LR
+        A["原始代码<br>使用@注解"] --> B["注解处理"]
+        B --> C["生成/修改代码"]
+        C --> D["实际执行逻辑"]
+        
+        subgraph "注解背后的实际逻辑"
+        D --> D1["步骤1"]
+        D1 --> D2["步骤2"]
+        D2 --> D3["步骤3"]
+        end
+    ```
+
 - **运行时行为**：解释注解如何影响运行时行为
 - **生命周期影响**：如适用，说明注解如何影响组件生命周期
 - **差异对比**：使用代码对比方式清晰展示有无注解的差异
 
-```
-// 使用注解前的代码
-public class MyClass {
-    // 原始代码
-}
+    ```java
+    // 使用注解前的代码
+    public class MyClass {
+        // 原始代码
+    }
 
-// 注解处理后实际等效的代码
-public class MyClass {
-    // 生成的代码或修改后的行为
-}
-```
+    // 注解处理后实际等效的代码
+    public class MyClass {
+        // 生成的代码或修改后的行为
+    }
+    ```
 
 ### 代码示例
 
@@ -140,17 +154,17 @@ public class MyClass {
 - **依赖注入原理**：如适用，解释基于注解的依赖注入原理
 - **技术原理图**：使用 Mermaid 流程图展示注解的技术实现原理
 
-```mermaid
-flowchart TD
-    A["Java/Kotlin 源代码"] --> B["编译器前端"]
-    B --> C["注解处理循环"]
-    C --> D{"是否有未处理\n的注解处理器"}
-    D -->|"是"| E["运行注解处理器"]
-    E --> F["生成新的源文件"]
-    F --> C
-    D -->|"否"| G["编译器后端"]
-    G --> H["生成字节码"]
-```
+    ```mermaid
+    flowchart TD
+        A["Java/Kotlin 源代码"] --> B["编译器前端"]
+        B --> C["注解处理循环"]
+        C --> D{"是否有未处理<br>的注解处理器"}
+        D -->|"是"| E["运行注解处理器"]
+        E --> F["生成新的源文件"]
+        F --> C
+        D -->|"否"| G["编译器后端"]
+        G --> H["生成字节码"]
+    ```
 
 ### 版本兼容性
 
@@ -191,4 +205,4 @@ flowchart TD
 - **开源实现**：提供注解处理器的开源实现链接
 - **学习资源**：推荐深入学习该注解的资源
 - **相关规范**：提供相关 Java/Android 规范的链接
-- **社区讨论**：提供值得关注的社区讨论链接 
+- **社区讨论**：提供值得关注的社区讨论链接
