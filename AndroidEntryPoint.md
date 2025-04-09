@@ -539,7 +539,7 @@ abstract class LoggingModule {
 1. **未添加 @HiltAndroidApp**：
 
    ```
-   错误：Hilt Gradle插件要求所有使用 @AndroidEntryPoint 的 Android 类型都有一个带有 @HiltAndroidApp 注解的应用程序类
+   错误：Hilt Gradle 插件要求所有使用 @AndroidEntryPoint 的 Android 类型都有一个带有 @HiltAndroidApp 注解的应用程序类
    ```
 
    解决：确保应用程序类添加了 `@HiltAndroidApp` 注解
