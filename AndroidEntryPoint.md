@@ -274,7 +274,7 @@ public final class LogsFragment extends Hilt_LogsFragment {
 }
 ```
 
-### 伪代码说明
+### 执行逻辑图解
 
 ```mermaid
 flowchart TB
