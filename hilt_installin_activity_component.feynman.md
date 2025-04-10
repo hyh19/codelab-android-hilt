@@ -10,7 +10,7 @@
 
 在 Android 应用中，我们需要不同的对象（依赖）在不同的地方使用。有些对象只在某个活动（Activity）中需要，而有些则在整个应用中都需要。`@InstallIn` 解决的核心问题就是："这个依赖应该在哪里可用，存活多久？"
 
-**输入**：带有 `@Module` 注解的类和一个组件类型（如 ActivityComponent）
+**输入**：带有 `@Module` 注解的类和一个组件类型（如 ActivityComponent）\
 **输出**：将模块中定义的依赖绑定到指定组件的生成代码
 
 ### 简单操作步骤
@@ -58,6 +58,7 @@
 注解处理器看到了这个标记，说："哦，开发者想让这个模块中的所有依赖都可以在每个活动中使用。我需要记下这个信息。"
 
 注解处理器拿出了一个大本子（代码生成），开始写下：
+
 1. 为 ActivityComponent 创建一个构建器
 2. 将标记的模块添加到这个组件的模块列表中
 3. 生成绑定代码，将接口映射到具体实现
@@ -98,6 +99,7 @@ Hilt 的 `@InstallIn` 注解实现中有几个关键机制：
 让我们看看当你使用 `@InstallIn(ActivityComponent::class)` 时，Hilt 在幕后生成了什么样的代码：
 
 **原始代码**：
+
 ```kotlin
 @InstallIn(ActivityComponent::class)
 @Module
@@ -108,6 +110,7 @@ abstract class NavigationModule {
 ```
 
 **编译期间，Hilt 生成的代码（简化版）**：
+
 ```kotlin
 // 1. 生成一个模块加载器
 @Generated("dagger.hilt.processor.internal.modulebinding.ModuleBindingGenerator")
@@ -123,13 +126,13 @@ public final class ActivityComponentImpl extends ActivityComponent {
   private ActivityComponentImpl(..., NavigationModule navigationModule, ...) {
     // 初始化代码
   }
-  
+
   // 3. 生成 AppNavigator 的工厂方法
   @Override
   public AppNavigator getAppNavigator() {
     return navigationModule.bindNavigator(new AppNavigatorImpl(...));
   }
-  
+
   // 其他代码...
 }
 
@@ -137,18 +140,18 @@ public final class ActivityComponentImpl extends ActivityComponent {
 @Generated("dagger.hilt.android.processor.internal.androidentrypoint.ActivityGenerator")
 public final class Hilt_MainActivity extends MainActivity {
   private ActivityComponentManager componentManager;
-  
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     // 初始化组件管理器
     componentManager = new ActivityComponentManager(this);
-    
+
     // 注入依赖（如果 MainActivity 中有 @Inject 字段）
     componentManager.inject(this);
-    
+
     super.onCreate(savedInstanceState);
   }
-  
+
   // 其他生命周期方法...
 }
 ```
@@ -158,12 +161,15 @@ public final class Hilt_MainActivity extends MainActivity {
 ## 分层次解释执行过程
 
 ### "五岁小孩"版本
+
 当你在游戏房间放一个玩具箱时，你告诉管家："这个玩具箱只属于这个房间，不是整个房子共享的。"每当有小朋友进入房间时，他们就可以使用这个玩具箱里的玩具。当小朋友离开房间时，玩具就放回箱子里了。
 
 ### "高中生"版本
+
 在 Android 中，不同组件有不同的生命周期。当你使用 `@InstallIn(ActivityComponent::class)` 时，你告诉 Hilt 这个模块中的依赖应该与 Activity 的生命周期绑定。Hilt 会在编译时生成代码，确保每次创建 Activity 时都会创建一个新的依赖容器，包含这个模块提供的所有依赖。当 Activity 销毁时，这些依赖也会被释放。
 
 ### "编程初学者"版本
+
 在编译阶段，Hilt 的注解处理器会扫描项目中所有带有 `@Module` 和 `@InstallIn` 注解的类。当它找到 `@InstallIn(ActivityComponent::class)` 时，它会记录这个模块应该安装到 ActivityComponent 中。
 
 然后，Hilt 会生成实现 ActivityComponent 接口的代码，这个实现会包含所有标记为安装到 ActivityComponent 的模块。它还会生成每个被 @AndroidEntryPoint 标记的 Activity 的子类，这个子类会在 onCreate() 方法中初始化 ActivityComponent 并执行依赖注入。
@@ -173,11 +179,13 @@ public final class Hilt_MainActivity extends MainActivity {
 ## 承认实现的权衡
 
 Hilt 的这种组件模型提供了几个优势：
+
 - 将依赖与 Android 生命周期紧密集成
 - 自动管理组件的创建和销毁，减少内存泄漏
 - 提供清晰的依赖可见性边界
 
 但这也带来了一些权衡：
+
 - 编译时间增加，因为需要生成大量代码
 - 增加了应用的方法数和代码大小
 - 引入了额外的学习成本，需要理解组件层次结构
@@ -202,4 +210,4 @@ Hilt 实际上是 Dagger 的一个封装，它主要做了以下事情：
 
 ---
 
-通过以上讲解，我们看到了 `@InstallIn(ActivityComponent::class)` 不仅仅是一个简单的注解，而是一个连接依赖、生命周期和组件体系的桥梁，它帮助我们在合适的时间和地点提供合适的依赖，同时让 Hilt 承担了大部分复杂的实现细节。 
+通过以上讲解，我们看到了 `@InstallIn(ActivityComponent::class)` 不仅仅是一个简单的注解，而是一个连接依赖、生命周期和组件体系的桥梁，它帮助我们在合适的时间和地点提供合适的依赖，同时让 Hilt 承担了大部分复杂的实现细节。
