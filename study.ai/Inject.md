@@ -61,6 +61,7 @@ classDiagram
 `@Inject` 使用 `RetentionPolicy.RUNTIME` 保留策略，这意味着注解信息会保留在编译后的类文件中，并且在运行时可通过反射访问。
 
 在 Dagger/Hilt 的实现中：
+
 - 编译期间，注解处理器识别所有带有 `@Inject` 的元素，生成提供这些依赖的代码。
 - 运行时，生成的代码负责实例化和提供依赖，一般不需要反射。
 
@@ -69,30 +70,36 @@ classDiagram
 `@Inject` 可用于三种元素：
 
 1. **构造函数 (CONSTRUCTOR)**：
+
    ```kotlin
    class DateFormatter @Inject constructor() { ... }
    ```
+
    - 表示该类的实例应由依赖注入框架提供。
    - Dagger/Hilt 将生成代码来实例化这个类。
 
 2. **字段 (FIELD)**：
+
    ```kotlin
    @Inject lateinit var logger: LoggerDataSource
    ```
+
    - 表示该字段的值应由依赖注入框架提供。
    - 常用于 Android 组件中。
 
 3. **方法 (METHOD)**：
+
    ```kotlin
    @Inject
    fun setLogger(logger: LoggerDataSource) { this.logger = logger }
    ```
+
    - 表示方法的参数由依赖注入框架提供，方法会被框架调用。
    - 在 Android 中较少使用。
 
 #### 继承特性
 
-`@Inject` 没有使用 `@Inherited` 元注解，因此它不会被子类继承。子类需要单独添加 `@Inject` 注解来标记其构造函数、字段或方法。 
+`@Inject` 没有使用 `@Inherited` 元注解，因此它不会被子类继承。子类需要单独添加 `@Inject` 注解来标记其构造函数、字段或方法。
 
 ### 注解工作原理
 
@@ -129,11 +136,13 @@ classDiagram
 对于每个带有 `@Inject` 注解的元素，Dagger/Hilt 会生成特定的代码：
 
 1. **构造函数注入**：
+
    ```kotlin
    class DateFormatter @Inject constructor() { ... }
    ```
-   
+
    生成的代码类似于：
+
    ```java
    public final class DateFormatter_Factory implements Factory<DateFormatter> {
      @Override
@@ -156,11 +165,13 @@ classDiagram
    ```
 
 2. **字段注入**：
+
    ```kotlin
    @Inject lateinit var logger: LoggerDataSource
    ```
-   
+
    生成的代码类似于：
+
    ```java
    public final class ButtonsFragment_MembersInjector implements MembersInjector<ButtonsFragment> {
      private final Provider<LoggerDataSource> loggerProvider;
@@ -224,7 +235,7 @@ flowchart TD
     O["检测到 @Inject 字段"] --> P["生成 MembersInjector"]
     P --> Q["在组件生命周期中调用注入"]
     end
-``` 
+```
 
 ## 注解使用方式
 
@@ -235,6 +246,7 @@ flowchart TD
 1. **构造函数注入（推荐）**：
 
    Kotlin:
+
    ```kotlin
    class DateFormatter @Inject constructor() {
        // 类的实现
@@ -242,6 +254,7 @@ flowchart TD
    ```
 
    Java:
+
    ```java
    public class DateFormatter {
        @Inject
@@ -254,6 +267,7 @@ flowchart TD
 2. **字段注入**：
 
    Kotlin:
+
    ```kotlin
    @AndroidEntryPoint
    class ButtonsFragment : Fragment() {
@@ -263,6 +277,7 @@ flowchart TD
    ```
 
    Java:
+
    ```java
    @AndroidEntryPoint
    public class ButtonsFragment extends Fragment {
@@ -274,6 +289,7 @@ flowchart TD
 3. **方法注入（较少使用）**：
 
    Kotlin:
+
    ```kotlin
    @Inject
    fun setDependencies(logger: LoggerDataSource) {
@@ -282,6 +298,7 @@ flowchart TD
    ```
 
    Java:
+
    ```java
    @Inject
    void setDependencies(LoggerDataSource logger) {
@@ -298,6 +315,7 @@ flowchart TD
    - 适用于自己创建的类，不能用于接口或第三方库中的类
    - 构造函数参数会自动被视为依赖并由 Dagger 提供
    - 示例：
+
      ```kotlin
      class LoggerInMemoryDataSource @Inject constructor() : LoggerDataSource { ... }
      ```
@@ -307,6 +325,7 @@ flowchart TD
    - 在 Android 中，需要配合 Hilt 的 `@AndroidEntryPoint` 等注解使用
    - 字段必须是可见的（不能是 private），在 Kotlin 中通常使用 `lateinit var`
    - 示例：
+
      ```kotlin
      @AndroidEntryPoint
      class LogsFragment : Fragment() {
@@ -319,6 +338,7 @@ flowchart TD
    - 方法参数会被视为依赖并由 Dagger 提供
    - 在 Android 中使用较少
    - 示例：
+
      ```kotlin
      @Inject
      fun initializeLogger(logger: LoggerDataSource) {
@@ -452,6 +472,7 @@ flowchart TD
    - Spring 使用 `@Autowired` 代替 `@Inject`
    - Spring 主要依赖运行时反射，Dagger/Hilt 使用编译时代码生成
    - 示例对比：
+
      ```kotlin
      // Hilt/Dagger 使用 @Inject
      @Inject lateinit var service: UserService
@@ -464,6 +485,7 @@ flowchart TD
    - Swift 没有内置的依赖注入框架
    - 第三方库如 Swinject 提供类似功能
    - 示例对比：
+
      ```swift
      // Swift 使用 Swinject 的 @Injected 属性包装器
      @Injected var service: UserService
@@ -476,6 +498,7 @@ flowchart TD
    - Flutter 使用 provider 包或 GetIt 等第三方库
    - injectable 库提供基于注解的依赖注入
    - 示例对比：
+
      ```dart
      // Flutter 使用 injectable
      @injectable
@@ -492,6 +515,7 @@ flowchart TD
 以下是使用 `@Inject` 注解前的原始代码：
 
 构造函数注入：
+
 ```kotlin
 // 没有 @Inject 的简单类
 class DateFormatter {
@@ -522,6 +546,7 @@ class ButtonsFragment : Fragment() {
 添加 `@Inject` 注解并使用 Hilt 后的代码：
 
 构造函数注入：
+
 ```kotlin
 // 使用 @Inject 标记构造函数
 class DateFormatter @Inject constructor() {
@@ -737,6 +762,7 @@ class LogsFragment : Fragment() {
 ```
 
 主要区别：
+
 1. 使用 `@Inject` 后，不需要手动创建依赖
 2. 代码更专注于业务逻辑，减少了样板代码
 3. 依赖解耦，Fragment 不需要了解依赖的具体实现
@@ -806,6 +832,7 @@ Dagger/Hilt 的一大优势是最小化反射使用：
 使用 `@Inject` 注解时需要特别注意 ProGuard 配置，以确保代码缩减和混淆不会破坏依赖注入：
 
 1. **保留注解**：
+
    ```
    -keepclasseswithmembers class * {
        @javax.inject.Inject <init>(...);
@@ -817,21 +844,25 @@ Dagger/Hilt 的一大优势是最小化反射使用：
    ```
 
 2. **保留模块**：
+
    ```
    -keep class * extends dagger.Module
    ```
 
 3. **保留组件**：
+
    ```
    -keep class * extends dagger.Component
    ```
 
 4. **保留 Hilt 生成的类**：
+
    ```
    -keep class * extends dagger.hilt.android.internal.managers.** { *; }
    ```
 
 5. **保留入口点**：
+
    ```
    -keep @dagger.hilt.EntryPoint class *
    ```
@@ -916,6 +947,7 @@ Hilt 会自动为项目提供基本的 ProGuard 规则，但对于复杂项目�
 Dagger/Hilt 的注解处理器在 META-INF/services 目录中注册：
 
 1. **注册文件**：
+
    ```
    META-INF/services/javax.annotation.processing.Processor
    ```
@@ -1180,6 +1212,7 @@ flowchart TD
    - 单例对象需要特别处理
 
 4. **Kotlin 特定的语法**：
+
    ```kotlin
    // Kotlin 中的构造函数注入
    class MyService @Inject constructor(
@@ -1353,6 +1386,7 @@ Java/Kotlin 的注解系统：
    - 文档生成：生成 API 文档
 
 3. **注解语法**：
+
    ```kotlin
    // Kotlin 定义注解
    @Target(AnnotationTarget.CLASS, AnnotationTarget.FUNCTION)
@@ -1593,6 +1627,7 @@ Java/Kotlin 注解系统与其他语言类似机制的对比：
    - 注入测试导航器
 
 4. **测试工具**：
+
    ```kotlin
    // Hilt 测试模块
    @Module
