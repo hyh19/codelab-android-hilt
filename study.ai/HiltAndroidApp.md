@@ -395,11 +395,11 @@ flowchart LR
     C --> D["实际执行逻辑"]
     
     subgraph "注解背后的实际逻辑"
-    D --> D1["1. 应用启动"]
-    D1 --> D2["2. Hilt_Application.onCreate()"]
-    D2 --> D3["3. 创建 SingletonComponent"]
-    D3 --> D4["4. 调用用户 Application.onCreate()"]
-    D4 --> D5["5. 组件可用于依赖注入"]
+    D --> D1["1\. 应用启动"]
+    D1 --> D2["2\. Hilt_Application.onCreate()"]
+    D2 --> D3["3\. 创建 SingletonComponent"]
+    D3 --> D4["4\. 调用用户 Application.onCreate()"]
+    D4 --> D5["5\. 组件可用于依赖注入"]
     end
 ```
 
