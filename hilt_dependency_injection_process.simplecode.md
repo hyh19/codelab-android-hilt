@@ -603,7 +603,3 @@ sequenceDiagram
     AC->>MA: 设置 navigator = 新的 AppNavigatorImpl 实例
     deactivate HMA
 ```
-
-## 10. 源码版本信息
-
-本文分析基于 Dagger Hilt 2.40.1 版本源码。
