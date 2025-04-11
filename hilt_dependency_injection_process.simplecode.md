@@ -214,6 +214,7 @@ protected Object createComponent() {
 ```
 
 组件层次结构：
+
 1. `SingletonComponent` (应用级)
 2. `ActivityRetainedComponent` (跨 Activity 生命周期)
 3. `ActivityComponent` (Activity 级别)
@@ -271,6 +272,7 @@ public @interface AndroidEntryPoint {
 ```
 
 `@AndroidEntryPoint` 实现原理：
+
 1. 触发 `AndroidEntryPointProcessor` 生成 `Hilt_` 前缀的基类
 2. 使用 `@GeneratesRootInput` 确保被注解处理器正确处理
 3. 生成的基类包含组件管理和注入逻辑
@@ -290,6 +292,7 @@ public @interface Module {
 ```
 
 `@Module` 实现原理：
+
 1. 标记类为依赖提供者集合
 2. 允许包含其他模块
 3. 可以声明子组件
@@ -308,6 +311,7 @@ public @interface InstallIn {
 ```
 
 `@InstallIn` 实现原理：
+
 1. 指定模块应安装到哪个组件
 2. 使用 `@GeneratesRootInput` 确保处理器收集这些信息
 3. 在组件生成时，将模块添加到指定组件
@@ -324,6 +328,7 @@ public @interface Binds {}
 ```
 
 `@Binds` 实现原理：
+
 1. 标记抽象方法，用于接口到实现的绑定
 2. 不生成实际代码，仅提供关系映射信息
 3. 在组件生成时转换为依赖图中的绑定关系
@@ -341,6 +346,7 @@ public interface ActivityComponent {}
 ```
 
 `ActivityComponent` 在 Hilt 中只是一个空接口，但它：
+
 1. 使用 `@DefineComponent` 定义组件层次结构
 2. 标记作用域为 `@ActivityScoped`
 3. 指定父组件为 `ActivityRetainedComponent`
@@ -401,6 +407,7 @@ private static final class ActivityCImpl extends LogApplication_HiltComponents.A
 ### 5.3 不同 Activity 的组件实例
 
 每个 Activity 实例都有自己的 `ActivityComponent` 实例：
+
 1. 组件类型相同，但是实例不同
 2. 不同 Activity 通过 `ActivityComponentManager` 创建各自的组件实例
 3. 组件实例的生命周期与 Activity 实例相同
@@ -573,4 +580,4 @@ sequenceDiagram
 
 ## 10. 源码版本信息
 
-本文分析基于 Dagger Hilt 2.40.1 版本源码。 
+本文分析基于 Dagger Hilt 2.40.1 版本源码。
