@@ -4,7 +4,7 @@
 
 Hilt 是构建在 Dagger 之上的依赖注入库，专为 Android 应用设计。本文将通过示例讲解 Hilt 从编译期到运行时的完整依赖注入过程，以 `navigator` 被注入到 `MainActivity` 为例，深入分析 Hilt 的底层实现原理。
 
-本文基于 Dagger Hilt 2.44.2 版本的源码进行分析。
+本文基于 Dagger Hilt 2.40.1 版本的源码进行分析。
 
 ## 2. 编译期处理流程
 
@@ -20,9 +20,9 @@ Hilt 使用注解处理器（APT）在编译时生成代码。主要处理器包
 
 当 `MainActivity` 被标注为 `@AndroidEntryPoint` 时，编译过程如下：
 
-```
-dagger/java/dagger/hilt/android/processor/internal/androidentrypoint/AndroidEntryPointProcessor.java
+文件路径：`dagger/java/dagger/hilt/android/processor/internal/androidentrypoint/AndroidEntryPointProcessor.java`
 
+```java
 @Override
 public void processEach(TypeElement annotation, Element element) throws Exception {
   AndroidEntryPointMetadata metadata = AndroidEntryPointMetadata.of(getProcessingEnv(), element);
@@ -43,9 +43,9 @@ public void processEach(TypeElement annotation, Element element) throws Exceptio
 
 `ActivityGenerator` 为每个标记了 `@AndroidEntryPoint` 的 Activity 生成一个 Hilt 基类：
 
-```
-dagger/java/dagger/hilt/android/processor/internal/androidentrypoint/ActivityGenerator.java
+文件路径：`dagger/java/dagger/hilt/android/processor/internal/androidentrypoint/ActivityGenerator.java`
 
+```java
 public void generate() throws IOException {
   TypeSpec.Builder builder =
       TypeSpec.classBuilder(generatedClassName.simpleName())  // Hilt_MainActivity
@@ -75,15 +75,21 @@ public void generate() throws IOException {
 }
 ```
 
-生成的 `Hilt_MainActivity` 基类大致如下：
+生成的 `Hilt_MainActivity` 基类大致如下（从生成的代码中获取）：
+
+文件路径：`app/build/generated/source/kapt/debug/com/example/android/hilt/ui/Hilt_MainActivity.java`
 
 ```java
-// 生成的代码（简化版）
-public abstract class Hilt_MainActivity extends AppCompatActivity implements ComponentManager<ActivityComponent> {
+public abstract class Hilt_MainActivity extends AppCompatActivity implements GeneratedComponentManagerHolder {
   
   private volatile ActivityComponentManager componentManager;
   
-  protected Hilt_MainActivity() {
+  private final Object componentManagerLock = new Object();
+  
+  private boolean injected = false;
+  
+  Hilt_MainActivity() {
+    super();
     _initHiltInternal();
   }
   
@@ -98,13 +104,13 @@ public abstract class Hilt_MainActivity extends AppCompatActivity implements Com
   }
   
   @Override
-  public Object generatedComponent() {
-    return componentManager().generatedComponent();
+  public final Object generatedComponent() {
+    return this.componentManager().generatedComponent();
   }
   
   protected ActivityComponentManager componentManager() {
     if (componentManager == null) {
-      synchronized (this) {
+      synchronized (componentManagerLock) {
         if (componentManager == null) {
           componentManager = new ActivityComponentManager(this);
         }
@@ -114,8 +120,11 @@ public abstract class Hilt_MainActivity extends AppCompatActivity implements Com
   }
   
   protected void inject() {
-    ((MainActivity_GeneratedInjector) generatedComponent())
-        .injectMainActivity((MainActivity) this);
+    if (!injected) {
+      injected = true;
+      ((MainActivity_GeneratedInjector) this.generatedComponent())
+          .injectMainActivity((MainActivity) this);
+    }
   }
 }
 ```
@@ -124,7 +133,7 @@ public abstract class Hilt_MainActivity extends AppCompatActivity implements Com
 
 当处理 `NavigationModule` 时：
 
-```
+```kotlin
 @InstallIn(ActivityComponent.class)
 @Module
 abstract class NavigationModule {
@@ -133,15 +142,17 @@ abstract class NavigationModule {
 }
 ```
 
-处理器生成一个聚合依赖信息：
+处理器生成一个聚合依赖信息，在生成的代码中可以看到：
+
+文件路径：`app/build/generated/source/kapt/debug/hilt_aggregated_deps/_com_example_android_hilt_di_NavigationModule.java`
 
 ```java
-// 生成的代码（简化版）
 @AggregatedDeps(
     components = "dagger.hilt.android.components.ActivityComponent",
     modules = "com.example.android.hilt.di.NavigationModule"
 )
-public class NavigationModule_ActivityComponentModuleDeps {}
+public class _com_example_android_hilt_di_NavigationModule {
+}
 ```
 
 ### 2.5 `@Binds` 处理流程
@@ -177,9 +188,9 @@ private void processBinding(ExecutableElement method, BindingMethod bindingMetho
 
 `ActivityComponentManager` 负责管理 Activity 组件的创建：
 
-```
-dagger/java/dagger/hilt/android/internal/managers/ActivityComponentManager.java
+文件路径：`dagger/java/dagger/hilt/android/internal/managers/ActivityComponentManager.java`
 
+```java
 @Override
 public Object generatedComponent() {
   if (component == null) {
@@ -213,20 +224,34 @@ protected Object createComponent() {
 
 ```java
 protected void inject() {
-  ((MainActivity_GeneratedInjector) generatedComponent())
-      .injectMainActivity((MainActivity) this);
+  if (!injected) {
+    injected = true;
+    ((MainActivity_GeneratedInjector) this.generatedComponent())
+        .injectMainActivity((MainActivity) this);
+  }
 }
 ```
 
-生成的 `MainActivity_GeneratedInjector` 实现：
+生成的注入实现在 `MainActivity_MembersInjector` 类中：
+
+文件路径：`app/build/generated/source/kapt/debug/com/example/android/hilt/ui/MainActivity_MembersInjector.java`
 
 ```java
-// 生成的代码（简化版）
-public class MainActivity_GeneratedInjector implements Injector<MainActivity> {
+public final class MainActivity_MembersInjector implements MembersInjector<MainActivity> {
+  private final Provider<AppNavigator> navigatorProvider;
+
+  public MainActivity_MembersInjector(Provider<AppNavigator> navigatorProvider) {
+    this.navigatorProvider = navigatorProvider;
+  }
+
   @Override
-  public void injectMainActivity(MainActivity instance) {
-    // 使用 Dagger 生成的 ActivityComponent 实现类进行字段注入
-    instance.navigator = activityComponent.getNavigator();
+  public void injectMembers(MainActivity instance) {
+    injectNavigator(instance, navigatorProvider.get());
+  }
+
+  @InjectedFieldSignature("com.example.android.hilt.ui.MainActivity.navigator")
+  public static void injectNavigator(MainActivity instance, AppNavigator navigator) {
+    instance.navigator = navigator;
   }
 }
 ```
@@ -235,9 +260,9 @@ public class MainActivity_GeneratedInjector implements Injector<MainActivity> {
 
 ### 4.1 `@AndroidEntryPoint`
 
-```
-dagger/java/dagger/hilt/android/AndroidEntryPoint.java
+文件路径：`dagger/java/dagger/hilt/android/AndroidEntryPoint.java`
 
+```java
 @Target({ElementType.TYPE})
 @GeneratesRootInput
 public @interface AndroidEntryPoint {
@@ -252,9 +277,9 @@ public @interface AndroidEntryPoint {
 
 ### 4.2 `@Module`
 
-```
-dagger/java/dagger/Module.java
+文件路径：`dagger/java/dagger/Module.java`
 
+```java
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
@@ -271,9 +296,9 @@ public @interface Module {
 
 ### 4.3 `@InstallIn`
 
-```
-dagger/java/dagger/hilt/InstallIn.java
+文件路径：`dagger/java/dagger/hilt/InstallIn.java`
 
+```java
 @Retention(CLASS)
 @Target({ElementType.TYPE})
 @GeneratesRootInput
@@ -289,9 +314,9 @@ public @interface InstallIn {
 
 ### 4.4 `@Binds`
 
-```
-dagger/java/dagger/Binds.java
+文件路径：`dagger/java/dagger/Binds.java`
 
+```java
 @Documented
 @Retention(RUNTIME)
 @Target(METHOD)
@@ -307,9 +332,9 @@ public @interface Binds {}
 
 ### 5.1 `ActivityComponent` 接口
 
-```
-dagger/java/dagger/hilt/android/components/ActivityComponent.java
+文件路径：`dagger/java/dagger/hilt/android/components/ActivityComponent.java`
 
+```java
 @ActivityScoped
 @DefineComponent(parent = ActivityRetainedComponent.class)
 public interface ActivityComponent {}
@@ -322,55 +347,53 @@ public interface ActivityComponent {}
 
 ### 5.2 组件生成
 
-Hilt 为每个 Activity 类型生成特定的组件实现类：
+通过分析生成的代码 `DaggerLogApplication_HiltComponents_SingletonC.java`，可以看到 Hilt 为每个 Activity 类型生成特定的组件实现类：
 
 ```java
-// 生成的代码（简化版）
-@ComponentBuilder
-interface ActivityComponentBuilder {
-  ActivityComponentBuilder activity(Activity activity);
-  ActivityComponent build();
+// 简化版，基于生成的代码：ActivityCImpl 和 ActivityCBuilder
+private static final class ActivityCBuilder implements LogApplication_HiltComponents.ActivityC.Builder {
+  private final DaggerLogApplication_HiltComponents_SingletonC singletonC;
+  private final ActivityRetainedCImpl activityRetainedCImpl;
+  private Activity activity;
+  
+  @Override
+  public ActivityCBuilder activity(Activity activity) {
+    this.activity = Preconditions.checkNotNull(activity);
+    return this;
+  }
+  
+  @Override
+  public LogApplication_HiltComponents.ActivityC build() {
+    Preconditions.checkBuilderRequirement(activity, Activity.class);
+    return new ActivityCImpl(singletonC, activityRetainedCImpl, activity);
+  }
 }
 
-// 为 MainActivity 生成的组件（简化版）
-@ActivityScoped
-final class DaggerHiltComponents_SingletonComponent_ActivityComponent
-    implements ActivityComponent, MainActivity_GeneratedInjector {
-  
+private static final class ActivityCImpl extends LogApplication_HiltComponents.ActivityC {
   private final Activity activity;
-  private final AppNavigatorImpl appNavigatorImpl;
+  private final DaggerLogApplication_HiltComponents_SingletonC singletonC;
+  private final ActivityRetainedCImpl activityRetainedCImpl;
+  private final ActivityCImpl activityCImpl = this;
   
-  private DaggerHiltComponents_SingletonComponent_ActivityComponent(
-      Builder builder, Activity activityParam) {
-    this.activity = activityParam;
-    this.appNavigatorImpl = new AppNavigatorImpl((FragmentActivity)activity);
+  private Provider<FragmentActivity> provideFragmentActivityProvider;
+  private Provider<LoggerInMemoryDataSource> loggerInMemoryDataSourceProvider;
+  private Provider<LoggerDataSource> bindInMemoryLoggerProvider;
+  
+  // 实际生成的代码包含的 AppNavigatorImpl 创建逻辑
+  private AppNavigatorImpl appNavigatorImpl() {
+    return new AppNavigatorImpl((FragmentActivity) activity);
   }
   
-  // 实现注入方法
   @Override
-  public void injectMainActivity(MainActivity instance) {
-    instance.navigator = getNavigator();
+  public void injectMainActivity(MainActivity mainActivity) {
+    injectMainActivity2(mainActivity);
   }
   
-  // 提供 Navigator 实例
-  private AppNavigator getNavigator() {
-    return appNavigatorImpl;
-  }
-  
-  // 构建器实现
-  static final class Builder implements ActivityComponentBuilder {
-    private Activity activity;
-    
-    @Override
-    public Builder activity(Activity activity) {
-      this.activity = activity;
-      return this;
-    }
-    
-    @Override
-    public ActivityComponent build() {
-      return new DaggerHiltComponents_SingletonComponent_ActivityComponent(this, activity);
-    }
+  private MainActivity injectMainActivity2(MainActivity instance) {
+    MainActivity_MembersInjector.injectNavigator(
+        instance, 
+        appNavigatorImpl());
+    return instance;
   }
 }
 ```
@@ -550,4 +573,4 @@ sequenceDiagram
 
 ## 10. 源码版本信息
 
-本文分析基于 Dagger Hilt 2.44.2 版本源码。 
+本文分析基于 Dagger Hilt 2.40.1 版本源码。 
